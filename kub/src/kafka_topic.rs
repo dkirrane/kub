@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use std::time::Duration;
+
 use rdkafka::admin::AdminOptions;
 use rdkafka::consumer::Consumer;
 use regex::Regex;
+
 use crate::utils;
 
 pub fn create(topic_names: &Vec<String>, partitions: u8, replicas: u8, config: &HashMap<String, String>, timeout_ms: &u64) -> bool {
@@ -87,7 +89,6 @@ fn delete_topic_list(topic_names: &[&str]) {
     });
     println!("{:?}", res);
 }
-
 
 pub fn string_matches_regex(s: &str, regex: &str) -> bool {
     let re = Regex::new(regex).unwrap();

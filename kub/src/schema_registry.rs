@@ -1,13 +1,9 @@
-use std::time::Duration;
-use reqwest::blocking::Client;
-use crate::utils::{get_kafka_schemaregistry_uri};
+use crate::utils::{create_http_client, get_kafka_schemaregistry_uri};
 
 pub fn is_ready(timeout_ms: &u64) -> bool {
     println!("Checking if Kafka Schema Registry is ready - timeout={:?}ms", timeout_ms);
-    let client = Client::builder()
-        .timeout(Duration::from_millis(*timeout_ms))
-        .build()
-        .expect("Failed to build client");
+
+    let client = create_http_client(*timeout_ms);
 
     let response = client.get(get_kafka_schemaregistry_uri() + "/config")
         .send()
@@ -29,11 +25,11 @@ pub fn is_ready(timeout_ms: &u64) -> bool {
 
 pub fn add_schemas(schemas: &Vec<String>, timeout_ms: &u64) -> bool {
     println!("Adding schemas to Kafka Schema Registry: {:?} {:?}", schemas, timeout_ms);
-    // let client = Client::builder()
-    //     .timeout(Duration::from_millis(*timeout_ms))
-    //     .build()
-    //     .expect("Failed to build client");
-    //
+
+    // let client = create_http_client(*timeout_ms);
+
+    // todo - https://github.com/gklijs/schema_registry_converter/discussions/102
+
     // for schema in schemas {
     //     let response = client.post(get_kafka_schemaregistry_uri() + "/subjects/" + schema + "/versions")
     //         .json(&serde_json::json!({

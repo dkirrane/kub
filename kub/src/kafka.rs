@@ -1,5 +1,7 @@
 use std::time::Duration;
+
 use rdkafka::consumer::Consumer;
+
 use crate::utils;
 
 pub fn is_ready(min_broker_count: u8, timeout_ms: &u64) -> bool {

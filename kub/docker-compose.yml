@@ -1,0 +1,11 @@
+version: '3'
+services:
+
+  kub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /mnt/secrets-store:/mnt/secrets-store
+    command: ["kub"]

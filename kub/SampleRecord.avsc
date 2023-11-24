@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "SampleRecord",
+  "namespace": "io.avro.example",
+  "fields": [
+    {"name": "id", "type": "int"},
+    {"name": "timestamp", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "name", "type": "string"},
+    {"name": "department", "type": "string"},
+    {"name": "job", "type": ["string", "null"], "default": "None"},
+  ]
+}

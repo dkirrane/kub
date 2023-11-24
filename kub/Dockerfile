@@ -1,18 +1,49 @@
-FROM rust:1.70 as builder
-LABEL repository="rust-kafka-sasl"
+ARG RUST_VERSION=1.74.0
+ARG APP_NAME=kub
 
-WORKDIR /app
+#
+#
+# todo - https://github.com/fede1024/rust-rdkafka/discussions/632
+#
+#
 
+FROM rust:${RUST_VERSION} as builder
+
+# Install necessary dependencies
+RUN #apt-get update && apt-get install -y cmake
+
+# Set the working directory
+WORKDIR /usr/src
+
+# Copy local files to the Docker image
 COPY . .
 
+# Compile the Rust application
 RUN cargo build --release
 
-FROM debian:bullseye
+# Start from a lightweight base image
+FROM debian:buster-slim
+
+## Install necessary dependencies
+#RUN apt-get update \
+#    && apt-get install -y \
+#          ca-certificates tzdata \
+#          openssl libssl-dev \
+#          pkg-config \
+#    && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-    && apt-get install -y ca-certificates libssl-dev libsasl2-2 libsasl2-dev libsasl2-modules \
+    && apt-get install -y ca-certificates openssl libssl-dev libsasl2-2 libsasl2-dev libsasl2-modules \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /app/target/release/rust-kafka-sasl .
+# # https://github.com/fede1024/rust-rdkafka/blob/master/Dockerfile#L3C1-L9C15
+#RUN apt-get update && apt-get install -y build-essential \
+#    curl \
+#    openssl libssl-dev \
+#    pkg-config \
 
-CMD ["./rust-kafka-sasl"]
+# Copy the compiled Rust application from the builder image
+COPY --from=builder /usr/src/target/release/${APP_NAME} /usr/local/bin
+
+# Set the command to run your Rust application
+CMD ["${APP_NAME}"]

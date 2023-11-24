@@ -1,19 +1,14 @@
-// use std::env;
-// use std::process;
-// use kub::Config;
-// use kub::run;
-
 use std::collections::HashMap;
-// use std::path::PathBuf;
+
 use clap::{Args, Parser, Subcommand};
+
+use crate::Commands::{KafkaConnectorsExists, KafkaConnectorsList, KafkaConnectReady, KafkaReady, SchemaRegistryReady, SchemaRegistryRegisterSchemas, TopicDelete, TopicExists, TopicList};
 
 pub mod utils;
 mod kafka;
 mod kafka_connect;
 mod schema_registry;
 mod kafka_topic;
-
-use crate::Commands::{KafkaConnectorsExists, KafkaConnectReady, KafkaReady, SchemaRegistryReady, SchemaRegistryRegisterSchemas, TopicDelete, TopicExists, TopicList};
 
 // https://docs.rs/clap/latest/clap/_derive/_tutorial/index.html
 #[derive(Parser, Debug)]
@@ -37,6 +32,9 @@ enum Commands {
 
     #[command(name = "kc-connector-exists", about = "Checks if Kafka Connect Connector(s) exists")]
     KafkaConnectorsExists(KafkaConnectorsExistArgs),
+
+    #[command(name = "kc-connector-list", about = "List Kafka Connect Connectors")]
+    KafkaConnectorsList(KafkaConnectorsListArgs),
 
     #[command(name = "sr-ready", about = "Checks if Kafka Schema Registry is ready")]
     SchemaRegistryReady(SchemaRegistryReadyArgs),
@@ -68,6 +66,9 @@ struct KafkaConnectorsExistArgs {
     #[arg(short = 'n', long = "names", required = true, help = "List of connector names to check for the existence of")]
     names: Vec<String>,
 }
+
+#[derive(Args, Debug)]
+struct KafkaConnectorsListArgs {}
 
 #[derive(Args, Debug)]
 struct SchemaRegistryReadyArgs {}
@@ -128,6 +129,10 @@ fn main() {
         KafkaConnectorsExists(args) => {
             println!("kc-connector-exists {:?}", args);
             kafka_connect::is_connector(&args.names, timeout_ms);
+        }
+        KafkaConnectorsList(args) => {
+            println!("kc-connector-list {:?}", args);
+            kafka_connect::get_connectors(timeout_ms);
         }
         SchemaRegistryReady(args) => {
             println!("sr-ready {:?}", args);

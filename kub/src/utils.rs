@@ -1,10 +1,20 @@
 use std::fs::read_to_string;
+use std::time::Duration;
+
 use rdkafka::admin::AdminClient;
 use rdkafka::client::DefaultClientContext;
 use rdkafka::ClientConfig;
 use rdkafka::consumer::BaseConsumer;
+use reqwest::blocking::Client;
 
 const SECRET_CSI_DIR: &str = "/mnt/secrets-store";
+
+pub fn create_http_client(timeout_ms: u64) -> Client {
+    Client::builder()
+        .timeout(Duration::from_millis(timeout_ms))
+        .build()
+        .expect("Failed to build client")
+}
 
 // pub(crate) fn create_config() -> &mut ClientConfig {
 //     let client_config = ClientConfig::new()
@@ -54,7 +64,6 @@ pub(crate) fn create_consumer() -> BaseConsumer {
 }
 
 fn get_secret(secret: &str) -> String {
-
     read_to_string(format!("{}/{}", SECRET_CSI_DIR, secret))
         .expect(&format!("Failed to read {} secret", secret))
 }

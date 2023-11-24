@@ -15,3 +15,4 @@ Cargo.lock
 .history/
 kub/.idea/
 kub/kub.iml
+kub/create-secrets-perf-5.sh
