@@ -7,12 +7,13 @@ use std::collections::HashMap;
 // use std::path::PathBuf;
 use clap::{Args, Parser, Subcommand};
 
+pub mod utils;
 mod kafka;
 mod kafka_connect;
 mod schema_registry;
 mod kafka_topic;
 
-use crate::Commands::{KafkaConnectorsExists, KafkaConnectReady, KafkaReady, SchemaRegistryReady, SchemaRegistryRegisterSchemas, TopicExists};
+use crate::Commands::{KafkaConnectorsExists, KafkaConnectReady, KafkaReady, SchemaRegistryReady, SchemaRegistryRegisterSchemas, TopicDelete, TopicExists, TopicList};
 
 // https://docs.rs/clap/latest/clap/_derive/_tutorial/index.html
 #[derive(Parser, Debug)]
@@ -45,6 +46,12 @@ enum Commands {
 
     #[command(name = "topic-exists", alias = "ensure-topic", about = "Checks if the supplied topic names exist")]
     TopicExists(TopicExistsArgs),
+
+    #[command(name = "topic-list", alias = "topics-list", about = "List topics")]
+    TopicList(TopicListArgs),
+
+    #[command(name = "topic-delete", alias = "topics-delete", about = "Delete topics")]
+    TopicDelete(TopicDeleteArgs),
 }
 
 #[derive(Args, Debug)]
@@ -88,6 +95,19 @@ struct TopicExistsArgs {
     #[arg(long = "config", value_delimiter = ',', help = "The configuration to use on the new topic")]
     // configs: HashMap<String, String>,
     config: Option<Vec<String>>,
+}
+
+
+#[derive(Args, Debug)]
+struct TopicListArgs {
+    #[arg(long = "regex", default_value = "", help = "List topics matching the supplied regex")]
+    regex: String
+}
+
+#[derive(Args, Debug)]
+struct TopicDeleteArgs {
+    #[arg(long = "regex", required = true, help = "Delete topics matching the supplied regex")]
+    regex: String
 }
 
 fn main() {
@@ -134,6 +154,14 @@ fn main() {
             } else {
                 kafka_topic::exists(&args.topics, timeout_ms);
             }
+        }
+        TopicList(args) => {
+            println!("topic-list {:?}", args);
+            kafka_topic::list_topics(&args.regex, timeout_ms);
+        }
+        TopicDelete(args) => {
+            println!("topic-delete {:?}", args);
+            kafka_topic::delete_topics(&args.regex, timeout_ms);
         }
     }
 }
