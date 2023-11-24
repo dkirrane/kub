@@ -47,8 +47,10 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
 
         if let Some(array) = json_response.as_array() {
             for item in array {
-                println!("{}", item);
-                connector_names.push(item.to_string());
+                if let Some(name) = item.as_str() {
+                    println!("{}", name);
+                    connector_names.push(name.to_string());
+                }
             }
         }
     } else{
