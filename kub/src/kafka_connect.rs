@@ -39,7 +39,7 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
 
     let mut connector_names: Vec<String> = Vec::new();
     if success {
-        println!("\nSuccessfully listed Kafka Connect connectors");
+        println!("\nKafka Connect connectors:");
 
         let json_response: Value = response.json()
             .expect("Failed to parse response as JSON");
@@ -54,7 +54,7 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
             }
         }
     } else{
-        println!("\nFailed to list Kafka Connect connectors");
+        println!("\nFailed to get Kafka Connect connectors");
     }
 
     if connector_names.is_empty() {
@@ -68,18 +68,19 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
 }
 
 pub fn is_connector(connectors: &Vec<String>, timeout_ms: &u64) -> bool {
-    println!("Checking if Kafka Connect connectors exist {:?} {:?}", connectors, timeout_ms);
+    println!("\nChecking if Kafka Connect connectors exist {:?} {:?}", connectors, timeout_ms);
 
     let vec = get_connectors(timeout_ms);
 
     // check if all connectors exist
+    println!("\nCheckin for missing connectors...");
     let mut missing_connectors: Vec<String> = Vec::new();
     for connector in connectors {
         if !vec.contains(&connector) {
-            println!("Connector {} does not exist", connector);
             missing_connectors.push(connector.to_string());
         }
     }
+
     if missing_connectors.is_empty() {
         println!("All Connectors exist");
         true

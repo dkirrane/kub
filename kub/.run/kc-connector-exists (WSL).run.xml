@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="kc-connector-exists (WSL)" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
     <target name="WSL - Ubuntu" />
-    <option name="command" value="run --package kub --bin kub kc-connector-exists --names engagement-aggregate-sink,foo,bar" />
+    <option name="command" value="run --package kub --bin kub kc-connector-exists -n engagement-aggregate-sink -n foo -n bar" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <option name="emulateTerminal" value="true" />
     <option name="channel" value="DEFAULT" />
