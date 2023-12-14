@@ -8,4 +8,4 @@ services:
     volumes:
       - .:/app
       - /mnt/secrets-store:/mnt/secrets-store
-    command: ["kub"]
+    command: [ "kub" ]

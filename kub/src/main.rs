@@ -9,6 +9,7 @@ mod kafka;
 mod kafka_connect;
 mod schema_registry;
 mod kafka_topic;
+mod schema_registry_client;
 
 // https://docs.rs/clap/latest/clap/_derive/_tutorial/index.html
 #[derive(Parser, Debug)]
@@ -102,13 +103,13 @@ struct TopicExistsArgs {
 #[derive(Args, Debug)]
 struct TopicListArgs {
     #[arg(long = "regex", default_value = "", help = "List topics matching the supplied regex")]
-    regex: String
+    regex: String,
 }
 
 #[derive(Args, Debug)]
 struct TopicDeleteArgs {
     #[arg(long = "regex", required = true, help = "Delete topics matching the supplied regex")]
-    regex: String
+    regex: String,
 }
 
 fn main() {

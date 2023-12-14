@@ -5,7 +5,6 @@ use rdkafka::consumer::Consumer;
 use crate::utils;
 
 pub fn is_ready(min_broker_count: u8, timeout_ms: &u64) -> bool {
-
     println!("Checking if Kafka is ready {:?} {:?}", min_broker_count, timeout_ms);
 
     let consumer = utils::create_consumer();

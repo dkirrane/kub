@@ -17,7 +17,7 @@ pub fn is_ready(timeout_ms: &u64) -> bool {
     if success && response_text.contains("compatibilityLevel") {
         println!("\nKafka Schema Registry is ready");
         true
-    } else{
+    } else {
         println!("\nKafka Schema Registry is not ready");
         false
     }

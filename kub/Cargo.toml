@@ -13,6 +13,7 @@ reqwest = { version = "0.11.22", features = ["blocking", "json"] }
 serde_json = "1.0.99"
 regex = { version = "1.10.2", features = [] }
 tokio = { version = "1.32.0", features = [] }
+avro-rs = { version = "0.13.0", features = [] }
 
 # https://doc.rust-lang.org/cargo/reference/profiles.html
 [profile.dev]

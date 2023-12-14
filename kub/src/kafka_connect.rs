@@ -18,7 +18,7 @@ pub fn is_ready(timeout_ms: &u64) -> bool {
     if success {
         println!("\nKafka Connect is ready");
         true
-    } else{
+    } else {
         println!("\nKafka Connect is not ready");
         false
     }
@@ -53,7 +53,7 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
                 }
             }
         }
-    } else{
+    } else {
         println!("\nFailed to get Kafka Connect connectors");
     }
 
@@ -64,7 +64,7 @@ pub fn get_connectors(timeout_ms: &u64) -> Vec<String> {
             println!("Connector: {}", connector_name);
         }
     }
-    return connector_names
+    return connector_names;
 }
 
 pub fn is_connector(connectors: &Vec<String>, timeout_ms: &u64) -> bool {
